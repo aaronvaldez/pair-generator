@@ -22,18 +22,38 @@ class Generator extends Component {
     });
   }
 
-  getRandomPairs() {
-    const pairs = [];
-    const students = this.state.students.split("\n");
-    while (students.length) {
-      let pair = [];
-      pair.push(
-        students.splice(Math.floor(Math.random() * students.length), 1)[0]
-      );
-      pair.push(
-        students.splice(Math.floor(Math.random() * students.length), 1)[0]
-      );
-      pairs.push(pair);
+  shuffle(arr) {
+    let shuffled = arr.slice();
+    for (let i = 0; i < shuffled.length; i++) {
+      let j = Math.floor(Math.random() * i);
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  getRandomPairs(sprint) {
+    let pairs = [];
+    let students = this.state.students.split("\n").filter((val) => val !== '');
+    if (sprint === 0) {
+      students = this.shuffle(students);
+      for (let i = 0; i < students.length; i += 2) {
+        pairs.push([students[i], students[i + 1]]);
+      }
+      this.firstPairs = pairs;
+    } else {
+      let temp = this.firstPairs[0][1];
+      for (let i = 0; i < this.firstPairs.length - 1; i++) {
+        this.firstPairs[i][1] = this.firstPairs[i + 1][1];
+        pairs.push(this.firstPairs[i].slice());
+      }
+      this.firstPairs[this.firstPairs.length - 1][1] = temp;
+      pairs.push(this.firstPairs[this.firstPairs.length - 1].slice());
+      pairs = this.shuffle(pairs);
+      if (sprint % 2) {
+        for (let i = 0; i < pairs.length; i++) {
+          [pairs[i][1], pairs[i][0]] = [pairs[i][0], pairs[i][1]];
+        }
+      }
     }
     return pairs;
   }
@@ -44,7 +64,7 @@ class Generator extends Component {
     if (students) {
       const sprints = +this.state.sprints;
       for (let i = 0; i < sprints; i++) {
-        sprintPairs.push(this.getRandomPairs());
+        sprintPairs.push(this.getRandomPairs(i));
       }
       this.setState({ sprintPairs });
     }
@@ -71,7 +91,7 @@ class Generator extends Component {
           <br />
           <div>
             <p>Names of students (separated by line break):</p>
-            <textarea name="students" rows="20" cols="60" maxLength="255" />
+            <textarea name="students" rows="20" cols="60" />
           </div>
           <br />
         </form>
