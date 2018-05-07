@@ -33,8 +33,9 @@ class Generator extends Component {
 
   getRandomPairs(sprint) {
     let pairs = [];
-    let students = this.state.students.split("\n").filter((val) => val !== '');
-    if (sprint === 0) {
+    let students = this.state.students.split("\n").filter(val => val !== "");
+    let reshuffleSprint = Math.ceil(students.length / 2);
+    if (sprint === 1 || sprint % reshuffleSprint === 0) {
       students = this.shuffle(students);
       for (let i = 0; i < students.length; i += 2) {
         pairs.push([students[i], students[i + 1]]);
@@ -44,16 +45,14 @@ class Generator extends Component {
       let temp = this.firstPairs[0][1];
       for (let i = 0; i < this.firstPairs.length - 1; i++) {
         this.firstPairs[i][1] = this.firstPairs[i + 1][1];
-        pairs.push(this.firstPairs[i].slice());
       }
       this.firstPairs[this.firstPairs.length - 1][1] = temp;
-      pairs.push(this.firstPairs[this.firstPairs.length - 1].slice());
-      pairs = this.shuffle(pairs);
-      if (sprint % 2) {
-        for (let i = 0; i < pairs.length; i++) {
-          [pairs[i][1], pairs[i][0]] = [pairs[i][0], pairs[i][1]];
-        }
+      if (sprint % 2 === 0) {
+        this.firstPairs.forEach(pair => pairs.push([pair[1], pair[0]]));
+      } else {
+        this.firstPairs.forEach(pair => pairs.push([pair[0], pair[1]]));
       }
+      pairs = this.shuffle(pairs);
     }
     return pairs;
   }
@@ -63,8 +62,8 @@ class Generator extends Component {
     const sprintPairs = [];
     if (students) {
       const sprints = +this.state.sprints;
-      for (let i = 0; i < sprints; i++) {
-        sprintPairs.push(this.getRandomPairs(i));
+      for (let i = 1; i <= sprints; i++) {
+        sprintPairs.push(JSON.stringify(this.getRandomPairs(i)));
       }
       this.setState({ sprintPairs });
     }
@@ -119,7 +118,7 @@ class Generator extends Component {
               <h3 className="generator-title">Sprint {i + 1}</h3>
               <table className="sprint-pairs">
                 <tbody>
-                  {pairs.map((pair, j) => (
+                  {JSON.parse(pairs).map((pair, j) => (
                     <tr key={j}>
                       <td>{pair[0]}</td>
                       <td>{pair[1]}</td>
