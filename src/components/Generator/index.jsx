@@ -25,7 +25,7 @@ class Generator extends Component {
   shuffle(arr) {
     let shuffled = arr.slice();
     for (let i = 0; i < shuffled.length; i++) {
-      let j = Math.floor(Math.random() * i);
+      let j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
