@@ -9,7 +9,7 @@ function TextFile(props) {
     <div id="text-container" key={i}>
     <Helmet bodyAttributes={{ style: "background-color : #fff" }} />
       Sprint {i + 1}
-      {pairs.map((pair, j) => (
+      {JSON.parse(pairs).map((pair, j) => (
         <div key={j}>{pair[1] ? `${pair[0]} | ${pair[1]}` : pair[0]}</div>
       ))}
       <br />
