@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import randomstring from "randomstring";
-import Helmet from "react-helmet";
 
 import "./Generator.css";
 
@@ -57,7 +56,8 @@ class Generator extends Component {
     return pairs;
   }
 
-  generatePairs() {
+  generatePairs(e) {
+    e.preventDefault();
     const students = this.state.students;
     const sprintPairs = [];
     if (students) {
@@ -79,56 +79,56 @@ class Generator extends Component {
 
   render() {
     return (
-      <div id="generator-container">
-        <Helmet bodyAttributes={{ style: "background-color : #4aaded" }} />
-        <h1 className="generator-title">Hack Reactor Student Pair Generator</h1>
-        <form className="generator-form" onChange={e => this.formHandler(e)}>
-          <div>
-            <p>How many sprints?</p>
-            <input type="text" name="sprints" size="62" maxLength="255" />
-          </div>
-          <br />
-          <div>
-            <p>Names of students (separated by line break):</p>
-            <textarea name="students" rows="20" cols="60" />
-          </div>
-          <br />
-        </form>
-        <button
-          className="button"
-          type="submit"
-          value="Get Pairs"
-          onClick={() => this.generatePairs()}
-        >
-          Get Pairs
-        </button>
-        {this.state.sprintPairs.length ? (
-          <button
-            className="button"
-            type="submit"
-            value="Get Text File"
-            onClick={() => this.createTextFile()}
-          >
-            Get Text File
-          </button>
-        ) : null}
-        {(this.state.sprintPairs.length &&
-          this.state.sprintPairs.map((pairs, i) => (
-            <div id="table-container" key={i}>
-              <h3 className="generator-title">Sprint {i + 1}</h3>
-              <table className="sprint-pairs">
-                <tbody>
-                  {JSON.parse(pairs).map((pair, j) => (
-                    <tr key={j}>
-                      <td>{pair[0]}</td>
-                      <td>{pair[1]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      <div id="page-container">
+        <div className="generator-title">Hack Reactor Student Pair Generator</div>
+        <div id="generator-container">
+          <form className="generator-form" onChange={e => this.formHandler(e)} onSubmit={(e) => this.generatePairs(e)}>
+            <div>
+              <p>How many sprints?</p>
+              <input type="text" name="sprints" size="62" maxLength="255" />
             </div>
-          ))) ||
-          null}
+            <br />
+            <div>
+              <p>Names of students (separated by line break):</p>
+              <textarea name="students" rows="20" cols="60" />
+            </div>
+            <br />
+            <button
+              className="button"
+              type="submit"
+              value="Get Pairs"
+            >
+              Get Pairs
+            </button>
+          </form>
+          {this.state.sprintPairs.length ? (
+            <button
+              className="button"
+              type="submit"
+              value="Get Text File"
+              onClick={() => this.createTextFile()}
+            >
+              Get Text File
+            </button>
+          ) : null}
+          {(this.state.sprintPairs.length &&
+            this.state.sprintPairs.map((pairs, i) => (
+              <div id="table-container" key={i}>
+                <h3 className="sprint-title">Sprint {i + 1}</h3>
+                <table className="sprint-pairs">
+                  <tbody>
+                    {JSON.parse(pairs).map((pair, j) => (
+                      <tr key={j}>
+                        <td>{pair[0]}</td>
+                        <td>{pair[1]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))) ||
+            null}
+        </div>
       </div>
     );
   }

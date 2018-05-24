@@ -1,8 +1,7 @@
 const path = require("path");
-// const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
-  entry: path.resolve(__dirname, "./src/"),
+  entry: path.resolve(__dirname, "./src"),
   output: {
     path: path.resolve(__dirname, "./public"),
     filename: "bundle.js"

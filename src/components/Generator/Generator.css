@@ -1,3 +1,9 @@
+html, body {
+  min-height: 100vh;
+  padding: 0px;
+  margin: 0px;
+}
+
 table {
   width: 100%;
 }
@@ -15,20 +21,25 @@ table tr:nth-child(odd) {
 
 input, textarea {
   font-size: 15px;
+  width: 99%;
 }
 
 /* table tr:nth-child(even) {
   background-color: #383838;
 } */
 
-#generator-container {
-  display: flex;
-  flex-flow: column nowrap;
-  max-width: 500px;
-  margin: auto;
-  align-items: center;
+#page-container {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: 80px auto;
   color: #fff;
+  background: linear-gradient(rgb(9,34,76), #4aaded);
   font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#generator-container {
+  max-width: 500px;
+  margin: 10px auto;
   font-size: 18px;
 }
 
@@ -40,6 +51,16 @@ input, textarea {
 
 .generator-title {
   text-align: center;
+  background-color: rgb(9,34,76);
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 80px;
+  box-shadow: 0px 1px 13px white;
+}
+
+.sprint-title {
+  text-align: center;
+  font-weight: bold;
 }
 
 .generator-form {
@@ -57,7 +78,7 @@ input, textarea {
   padding: 10px;
   cursor: pointer;
   border: 1px solid #fff;
-  background-color: #4aaded;
+  background-color: rgb(9,34,76);
   transition: all .2s ease-in-out;
   color: #fff;
   margin-bottom: 15px;
@@ -67,5 +88,5 @@ input, textarea {
   color: #4aaded;
   transition: all .2s ease-in-out;
   background-color: #fff;
+  color: black;
 }
-
